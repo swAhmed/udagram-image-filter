@@ -28,7 +28,10 @@ import { filterImageFromURL, deleteLocalFiles } from './util/util';
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
 
   /**************************************************************************** */
-  app.get("/filteredimage/", async (req, res) => {
+  let path:string = "/filteredimage/"
+
+  app.get(path, async (req, res) =>  {
+    
     const url = req.query.image_url as string;
 
     if (!url) {
@@ -36,8 +39,11 @@ import { filterImageFromURL, deleteLocalFiles } from './util/util';
     }
 
     try {
-      const filteredpath = await filterImageFromURL(url);
-      res.sendFile(filteredpath, () => deleteLocalFiles([filteredpath]));
+      const filteredpath:string= await filterImageFromURL(url);
+      
+      res.status(200).sendFile(filteredpath, () => deleteLocalFiles([filteredpath]));
+      
+      
     } catch(error) {
       res.sendStatus(422); 
     }
